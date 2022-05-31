@@ -8,8 +8,10 @@ from users.serializers import CustomUserSerializer
 from .models import (Favorite, Ingredient, IngredientInRecipe, Recipe,
                      ShoppingList, Tag)
 from foodgram.settings import (
-    ADD_TAG_MESSAGE, INGREDIENT_AMOUNT_MESSAGE,
-    COOKING_TIME_MESSAGE, UNIQUE_INGREDIENT_MESSAGE,
+    ADD_TAG_MESSAGE,
+    INGREDIENT_AMOUNT_MESSAGE,
+    COOKING_TIME_MESSAGE,
+    UNIQUE_INGREDIENT_MESSAGE,
     )
 
 
@@ -57,8 +59,10 @@ class RecipeSerializer(serializers.ModelSerializer):
         many=True,
         read_only=True,
     )
-    is_favorited = serializers.SerializerMethodField()
-    is_in_shopping_cart = serializers.SerializerMethodField()
+    is_favorited = serializers.SerializerMethodField(
+        method_name='get_favorite')
+    is_in_shopping_cart = serializers.SerializerMethodField(
+        method_name='get_is_in_shopping_cart')
 
     class Meta:
         model = Recipe
@@ -135,8 +139,4 @@ class RecipeSerializer(serializers.ModelSerializer):
         self.get_ingredients_amount(ingredients, instance)
         if validated_data.get('image') is not None:
             instance.image = validated_data.get('image')
-        instance.name = validated_data.get('name')
-        instance.text = validated_data.get('text')
-        instance.cooking_time = validated_data.get('cooking_time')
-        instance.save()
-        return instance
+            super().update(**validated_data)

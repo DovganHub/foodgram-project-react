@@ -117,7 +117,7 @@ class IngredientInRecipe(models.Model):
     )
     ingredient = models.ForeignKey(
         Ingredient,
-        on_delete=models.PROTECT,
+        on_delete=models.CASCADE,
         related_name='ingredients_amount',
         verbose_name='Ингредиент',
     )
@@ -131,13 +131,13 @@ class IngredientInRecipe(models.Model):
         verbose_name_plural = 'Ингридиенты в рецепте'
         constraints = (
             models.UniqueConstraint(
-                fields=('recipe', 'ingredient', ),
+                fields=('recipe', 'ingredient',),
                 name='unique_recipe_ingredient',
             ),
         )
 
     def __str__(self):
-        return f'{self.ingredient}'
+        return f'{self.ingredient.name}'
 
 
 class Favorite(models.Model):

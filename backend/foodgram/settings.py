@@ -1,13 +1,15 @@
 
 
 import os
+
 from dotenv import load_dotenv
 
 load_dotenv()
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-SECRET_KEY = 'k8&jlm0=twf)u90pg@kyyj66s044v#@9@hg!j1e=3t!k@4t7ad'
+SECRET_KEY = os.getenv('SECRET_KEY', default='default')
+
 DEBUG = False
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 INSTALLED_APPS = [

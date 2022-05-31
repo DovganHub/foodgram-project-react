@@ -3,7 +3,7 @@ from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
-from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
@@ -20,15 +20,15 @@ from .serializers import (IngredientSerializer, RecipeInFollowSerializer,
 class TagViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
-    permission_classes = (AllowAny, )
+    permission_classes = (IsAuthenticated, )
     pagination_class = None
 
 
 class IngredientViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Ingredient.objects.all()
     serializer_class = IngredientSerializer
-    permission_classes = (AllowAny, )
-    filter_backends = [DjangoFilterBackend]
+    permission_classes = (IsAuthenticated, )
+    filter_backends = (DjangoFilterBackend,)
     filter_class = IngredientFilter
     search_fields = ('^name',)
     pagination_class = None
@@ -38,7 +38,7 @@ class RecipeViewSet(ModelViewSet):
     queryset = Recipe.objects.all()
     serializer_class = RecipeSerializer
     permission_classes = (AuthorOrAdminOrRead, )
-    filter_backends = [DjangoFilterBackend, ]
+    filter_backends = (DjangoFilterBackend,)
     filter_class = RecipeFilter
     pagination_class = CustomPageNumberPaginator
 
@@ -46,9 +46,9 @@ class RecipeViewSet(ModelViewSet):
         serializer.save(author=self.request.user)
 
     @action(
-            methods=['post', 'delete', ],
+            methods=('post', 'delete',),
             detail=True,
-            permission_classes=[IsAuthenticated]
+            permission_classes=(IsAuthenticated,)
             )
     def favorite(self, request, pk=None):
         if request.method == 'POST':
@@ -61,9 +61,9 @@ class RecipeViewSet(ModelViewSet):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
     @action(
-            methods=['post', 'delete', ],
+            methods=('post', 'delete',),
             detail=True,
-            permission_classes=[IsAuthenticated]
+            permission_classes=(IsAuthenticated,)
             )
     def shopping_cart(self, request, pk=None):
         if request.method == 'POST':
@@ -77,8 +77,8 @@ class RecipeViewSet(ModelViewSet):
 
     @action(
         detail=False,
-        methods=['GET'],
-        permission_classes=[AuthorOrAdminOrRead]
+        methods=('GET',),
+        permission_classes=(AuthorOrAdminOrRead,)
         )
     def download_shopping_cart(self, request):
         user = request.user
@@ -90,7 +90,6 @@ class RecipeViewSet(ModelViewSet):
             'recipe__ingredients_amount__ingredient__measurement_unit',
             'recipe__ingredients_amount__amount'
         )
-        print(ingredients)
         text = 'Список покупков: \n'
         shoplist = {}
         for ingredients in ingredients:
