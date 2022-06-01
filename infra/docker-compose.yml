@@ -8,10 +8,6 @@ services:
       - ./.env
   frontend:
     image: dovgan/frontend:v.1
-    # build: ../frontend
-    # build:
-    #   context: ../frontend
-    #   dockerfile: Dockerfile
     depends_on:
       - db
     volumes:
@@ -39,6 +35,7 @@ services:
     restart: always
     depends_on:
       - backend
+      - frontend
 volumes:
   static_value:
   media_value:
