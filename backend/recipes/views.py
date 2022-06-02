@@ -1,3 +1,4 @@
+from django.db.models import Sum
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
@@ -81,27 +82,14 @@ class RecipeViewSet(ModelViewSet):
         permission_classes=(AuthorOrAdminOrRead,)
         )
     def download_shopping_cart(self, request):
-        user = request.user
-        queryset = IngredientInRecipe.objects.filter(
-            recipe__shopping_list__user=user
-            )
-        ingredients = queryset.values_list(
-            'recipe__ingredients_amount__ingredient__name',
-            'recipe__ingredients_amount__ingredient__measurement_unit',
-            'recipe__ingredients_amount__amount'
-        )
-        text = 'Список покупков: \n'
-        shoplist = {}
+        ingredients = IngredientInRecipe.objects.filter(
+            recipe__shopping_list__user=request.user).values_list(
+            'ingredient__name', 'ingredient__measurement_unit').order_by(
+                'ingredient__name').annotate(ingredient_total=Sum('amount'))
+        text = 'Список покупок: \n'
         for ingredients in ingredients:
             name, measurement_unit, amount = ingredients
-            if name not in shoplist:
-                shoplist[name] = {
-                    'единимца измерения': measurement_unit,
-                    'количество': amount
-                }
-            else:
-                shoplist[name]['amount', ] += amount
-        text += f'{str(shoplist)}'
+            text += f'{name} = {amount} {measurement_unit}\n'    
         response = HttpResponse(text, 'Content-Type: text/plane')
         response['Content-Disposition'] = 'attachment; filename="shoplist.txt"'
         return response
