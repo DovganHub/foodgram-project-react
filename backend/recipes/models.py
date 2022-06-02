@@ -59,7 +59,7 @@ class Recipe(models.Model):
         on_delete=models.CASCADE,
         verbose_name='Автор',
         help_text='Имя автора',
-        related_name='recipes'
+        related_name='recipes',
     )
     name = models.CharField(
         'Название',

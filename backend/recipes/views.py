@@ -89,7 +89,7 @@ class RecipeViewSet(ModelViewSet):
         text = 'Список покупок: \n'
         for ingredients in ingredients:
             name, measurement_unit, amount = ingredients
-            text += f'{name} = {amount} {measurement_unit}\n'    
+            text += f'{name} = {amount} {measurement_unit}\n'
         response = HttpResponse(text, 'Content-Type: text/plane')
         response['Content-Disposition'] = 'attachment; filename="shoplist.txt"'
         return response
