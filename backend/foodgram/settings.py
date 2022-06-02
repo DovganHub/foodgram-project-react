@@ -10,7 +10,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 SECRET_KEY = os.getenv('SECRET_KEY', default='default')
 
-DEBUG = False
+DEBUG = True
 ALLOWED_HOSTS = ['51.250.32.175', '127.0.0.1', 'localhost', 'backend']
 INSTALLED_APPS = [
     'logic.apps.LogicConfig',
