@@ -1,29 +1,3 @@
-# import csv
-# from importlib.resources import path
-# from django.core.management import BaseCommand
-# from recipes.models import Ingredient
-
-
-# class Command(BaseCommand):
-#     help = 'Load ingredients csv into DB'
-
-#     def add_arguments(self, parser):
-#         parser.add_argument('--path', type=str)
-#     print(path)
-#     def handle(self, *args, **kwargs):
-#         path = kwargs['path']
-#         with open(path, 'rt') as f:
-#             reader = csv.reader(f, delimiter=',')
-#             for row in reader:
-#                 Ingredient.objects.create(
-#                     name=row[0],
-#                     measurement_unit=row[1]
-#                 )
-
-# #python manage.py importcsv --path fixtures/ingredients.csv
-
-
-
 import csv
 import os
 
