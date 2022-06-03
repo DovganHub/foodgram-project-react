@@ -140,16 +140,3 @@ class RecipeSerializer(serializers.ModelSerializer):
         if validated_data.get('image') is not None:
             instance.image = validated_data.get('image')
             super().update(**validated_data)
-
-    # def update(self, instance, validated_data):
-    #     instance.tags.clear()
-    #     ingredients = validated_data.pop('ingredients')
-    #     IngredientInRecipe.objects.filter(recipe=instance).delete()
-    #     self.get_ingredients_amount(ingredients, instance)
-    #     if validated_data.get('image') is not None:
-    #         instance.image = validated_data.get('image')
-    #     instance.name = validated_data.get('name')
-    #     instance.text = validated_data.get('text')
-    #     instance.cooking_time = validated_data.get('cooking_time')
-    #     instance.save()
-    #     return instance
