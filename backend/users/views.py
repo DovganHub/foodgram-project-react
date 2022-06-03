@@ -5,7 +5,7 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 
 from logic.paginations import CustomPageNumberPaginator
-from logic.permissions import AuthorOrAdminOrRead
+from logic.permissions import AdminOrAuthorOrRead
 
 from .models import Subscription, User
 from .serializers import (CustomUserSerializer, SubscriptionGetSerializer,
@@ -16,7 +16,7 @@ class CustomUserViewSet(UserViewSet):
     queryset = User.objects.all()
     serializer_class = CustomUserSerializer
     pagination_class = CustomPageNumberPaginator
-    permission_classes = (AuthorOrAdminOrRead, )
+    permission_classes = (AdminOrAuthorOrRead, )
 
     @action(detail=False, permission_classes=[permissions.IsAuthenticated])
     def subscriptions(self, request):

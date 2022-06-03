@@ -10,7 +10,7 @@ from rest_framework.viewsets import ModelViewSet
 
 from logic.filters import IngredientFilter, RecipeFilter
 from logic.paginations import CustomPageNumberPaginator
-from logic.permissions import AuthorOrAdminOrRead
+from logic.permissions import AdminOrAuthorOrRead
 from recipes.models import (Favorite, Ingredient, IngredientInRecipe, Recipe,
                             ShoppingList, Tag)
 
@@ -38,7 +38,7 @@ class IngredientViewSet(viewsets.ReadOnlyModelViewSet):
 class RecipeViewSet(ModelViewSet):
     queryset = Recipe.objects.all()
     serializer_class = RecipeSerializer
-    permission_classes = (AuthorOrAdminOrRead, )
+    permission_classes = (AdminOrAuthorOrRead, )
     filter_backends = (DjangoFilterBackend,)
     filter_class = RecipeFilter
     pagination_class = CustomPageNumberPaginator
@@ -79,7 +79,7 @@ class RecipeViewSet(ModelViewSet):
     @action(
         detail=False,
         methods=('GET',),
-        permission_classes=(AuthorOrAdminOrRead,)
+        permission_classes=(AdminOrAuthorOrRead,)
         )
     def download_shopping_cart(self, request):
         ingredients = IngredientInRecipe.objects.filter(
