@@ -140,3 +140,4 @@ class RecipeSerializer(serializers.ModelSerializer):
         if validated_data.get('image') is not None:
             instance.image = validated_data.get('image')
             super().update(**validated_data)
+        return instance
